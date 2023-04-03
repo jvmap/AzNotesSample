@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AzNotesSample.Storage;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AzNotesSample.Pages
@@ -6,15 +7,26 @@ namespace AzNotesSample.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly IStorage _storage;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public string Text { get; set; } = string.Empty;
+
+        public IndexModel(ILogger<IndexModel> logger, IStorage storage)
         {
             _logger = logger;
+            _storage = storage;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
+            Text = await _storage.LoadAsync();
+        }
 
+        public async Task<ActionResult> OnPostAsync()
+        {
+            await _storage.SaveAsync(Text);
+            return RedirectToAction(null);
         }
     }
 }
