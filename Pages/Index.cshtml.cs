@@ -12,6 +12,9 @@ namespace AzNotesSample.Pages
         [BindProperty]
         public string Text { get; set; } = string.Empty;
 
+        [TempData]
+        public string Message { get; set; } = string.Empty;
+
         public IndexModel(ILogger<IndexModel> logger, IStorage storage)
         {
             _logger = logger;
@@ -26,6 +29,7 @@ namespace AzNotesSample.Pages
         public async Task<ActionResult> OnPostAsync()
         {
             await _storage.SaveAsync(Text);
+            Message = "Note saved";
             return RedirectToAction(null);
         }
     }
