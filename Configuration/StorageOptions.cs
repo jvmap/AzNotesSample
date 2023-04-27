@@ -1,6 +1,6 @@
 ﻿namespace AzNotesSample.Configuration
 {
-    public class BlobStorageOptions
+    public class StorageOptions
     {
         public string? AccountName { get; set; }
 

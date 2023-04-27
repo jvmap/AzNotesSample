@@ -1,5 +1,6 @@
 ﻿using AzNotesSample.Configuration;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 using System;
 
@@ -11,9 +12,9 @@ namespace AzNotesSample.Storage
         private const string BLOB_NAME = "note";
         private readonly string _storageConnectionString;
 
-        public BlobStorage(IOptions<BlobStorageOptions> options)
+        public BlobStorage(StorageConnectionString storageConnectionString)
         {
-            _storageConnectionString = GetStorageConnectionString(options.Value);
+            _storageConnectionString = storageConnectionString.Value;
         }
 
         public async Task<string> LoadAsync()
@@ -33,7 +34,7 @@ namespace AzNotesSample.Storage
         public async Task SaveAsync(string text)
         {
             BlobClient bc = await CreateBlobClientAsync();
-            await bc.UploadAsync(new BinaryData(text));
+            await bc.UploadAsync(new BinaryData(text), overwrite: true);
         }
 
         private async Task<BlobClient> CreateBlobClientAsync()
@@ -41,11 +42,6 @@ namespace AzNotesSample.Storage
             var bcc = new BlobContainerClient(_storageConnectionString, BLOB_CONTAINER_NAME);
             await bcc.CreateIfNotExistsAsync();
             return bcc.GetBlobClient(BLOB_NAME);
-        }
-
-        private static string GetStorageConnectionString(BlobStorageOptions options)
-        {
-            return $"DefaultEndpointsProtocol=https;AccountName={options.AccountName};AccountKey={options.AccountKey};";
         }
     }
 }

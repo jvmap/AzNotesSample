@@ -9,7 +9,8 @@ builder.Services.AddRazorPages();
 //builder.Services.AddSingleton<IStorage, MemoryStorage>();
 builder.Services.AddScoped<IStorage, BlobStorage>();
 
-builder.Services.Configure<BlobStorageOptions>(builder.Configuration);
+builder.Services.Configure<StorageOptions>(builder.Configuration);
+builder.Services.AddSingleton<StorageConnectionString>();
 
 var app = builder.Build();
 
