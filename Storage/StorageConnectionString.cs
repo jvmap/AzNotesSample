@@ -16,7 +16,7 @@ namespace AzNotesSample.Storage
 
         private static string GetStorageConnectionString(StorageOptions options)
         {
-            return $"DefaultEndpointsProtocol=https;AccountName={options.AccountName};AccountKey={options.AccountKey};";
+            return $"DefaultEndpointsProtocol=https;AccountName={options.STORAGE_ACCOUNT_NAME};AccountKey={options.STORAGE_ACCOUNT_KEY};";
         }
     }
 }

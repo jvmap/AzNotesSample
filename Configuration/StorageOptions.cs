@@ -2,8 +2,8 @@
 {
     public class StorageOptions
     {
-        public string? AccountName { get; set; }
+        public string? STORAGE_ACCOUNT_NAME { get; set; }
 
-        public string? AccountKey { get; set; }
+        public string? STORAGE_ACCOUNT_KEY { get; set; }
     }
 }

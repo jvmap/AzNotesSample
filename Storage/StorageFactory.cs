@@ -9,7 +9,7 @@ namespace AzNotesSample.Storage
         {
             var options = serviceProvider
                 .GetRequiredService<IOptions<StorageOptions>>();
-            if (string.IsNullOrEmpty(options.Value.AccountName))
+            if (string.IsNullOrEmpty(options.Value.STORAGE_ACCOUNT_NAME))
                 return new MemoryStorage();
             else
             {
