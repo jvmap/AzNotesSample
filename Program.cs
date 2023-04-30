@@ -5,11 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-//builder.Services.AddSingleton<IStorage, MemoryStorage>();
-builder.Services.AddScoped<IStorage, BlobStorage>();
-
+builder.Services.AddSingleton(StorageFactory.CreateStorage);
 builder.Services.Configure<StorageOptions>(builder.Configuration);
-builder.Services.AddSingleton<StorageConnectionString>();
 
 var app = builder.Build();
 
