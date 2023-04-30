@@ -17,6 +17,8 @@ namespace AzNotesSample.Storage
             _storageConnectionString = storageConnectionString.Value;
         }
 
+        public string DescriptiveText => "Azure Blob Storage";
+
         public async Task<string> LoadAsync()
         {
             BlobClient bc = await CreateBlobClientAsync();

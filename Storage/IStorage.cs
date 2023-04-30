@@ -5,5 +5,7 @@
         public Task SaveAsync(string text);
 
         public Task<string> LoadAsync();
+
+        public string DescriptiveText { get; }
     }
 }

@@ -15,6 +15,8 @@ namespace AzNotesSample.Pages
         [TempData]
         public string Message { get; set; } = string.Empty;
 
+        public string StorageTechnology => _storage.DescriptiveText;
+
         public IndexModel(ILogger<IndexModel> logger, IStorage storage)
         {
             _logger = logger;
