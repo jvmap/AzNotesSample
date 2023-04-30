@@ -1,6 +1,5 @@
 using AzNotesSample.Configuration;
 using AzNotesSample.Storage;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,16 +14,8 @@ builder.Services.AddSingleton<StorageConnectionString>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
 app.UseStaticFiles();
-
 app.UseRouting();
-
-app.UseAuthorization();
-
 app.MapRazorPages();
 
 app.Run();
