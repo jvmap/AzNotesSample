@@ -24,6 +24,12 @@ First, let's verify that all tools are correctly installed on your system.
    Click on the App Service resource, and then click ![azbrowse](https://user-images.githubusercontent.com/1012756/235449503-f9ff1bc3-a58e-4af3-96bd-0bde3343d50f.png).
    You should see a functioning website using server-side, in-memory storage.
 
+Optionally, you can verify that the user-entered note is lost after an application restart like this:
+```
+az webapp restart -g EonicsBicepHackNight -n <name of your webapp resource>
+```
+Note: it may take about one minute for the web app to restart.
+
 ### Challenge 1: Deploy a storage account ###
 
 Can you extend the bicep file to deploy a storage account resource, in addition to the App Service plan and App Service resources?
@@ -71,6 +77,12 @@ When you visit the sample website after deployment, you should now see that it i
 ![using_blob_storage](https://user-images.githubusercontent.com/1012756/235453194-dc9f5712-e661-4a92-b6f0-66ab938501a9.png)
 
 The note you enter is now persisted, even after application restarts.😏
+
+Optionally, you can verify that the user-entered note is indeed persisted after an application restart like this:
+```
+az webapp restart -g EonicsBicepHackNight -n <name of your webapp resource>
+```
+Note: it may take about one minute for the web app to restart.
 
 In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise2_solution.bicep).
 
