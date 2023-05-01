@@ -23,3 +23,37 @@ First, let's verify that all tools are correctly installed on your system.
    * 1 App Service resource.<br/>
    Click on the App Service resource, and then click ![azbrowse](https://user-images.githubusercontent.com/1012756/235449503-f9ff1bc3-a58e-4af3-96bd-0bde3343d50f.png).
    You should see a functioning website using server-side, in-memory storage.
+
+### Challenge 1: Deploy a storage account ###
+
+Can you extend the bicep file to deploy a storage account resource, in addition to the App Service plan and App Service resources?
+
+Use the following info:
+* Resource type: `Microsoft.Storage/storageAccounts`
+* Kind: `StorageV2`
+* SKU: `Standard_LRS`
+* (Optional) Disable public access to blobs by setting the relevant property.
+  ![blob_public_access](https://user-images.githubusercontent.com/1012756/235450555-a54fba19-3397-4b70-a4cd-167ede6f8bc5.png)
+
+Once you have updated the bicep file, you can update your current deployment:
+```
+az deployment group create -g EonicsBicepHackNight --template-file Baseline.bicep
+```
+
+After the deployment, the resource group `EonicsBicepHackNight` should contain 3 resources:
+* 1 App Service plan resource
+* 1 App Service resource
+* 1 Storage Account resource
+
+In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise1_solution.bicep).
+
+### Clean up ###
+Run the following command to clean up any Azure resources that you created during this workshop.
+```
+az group delete -n EonicsBicepHackNight
+```
+
+You may also wish to log out from the Azure CLI:
+```
+az logout
+```
