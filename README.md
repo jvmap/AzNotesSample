@@ -47,6 +47,29 @@ After the deployment, the resource group `EonicsBicepHackNight` should contain 3
 
 In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise1_solution.bicep).
 
+### Challenge 2: Connect web app to storage account ###
+
+You have now successfully deployed both a web app and a storage account, however, the two are not connected. The web app is still using in-memory storage.
+
+The web app is programmed to use a storage account when the property `STORAGE_ACCOUNT_NAME` is configured. Morever, when `STORAGE_ACCOUNT_NAME` is configured, also `STORAGE_ACCOUNT_KEY` must be configured.
+
+The `STORAGE_ACCOUNT_KEY` property should contain one of the two access keys of the storage account.
+
+The challenge is to modify the bicep file, so that the `STORAGE_ACCOUNT_NAME` and `STORAGE_ACCOUNT_KEY` parameters are automatically configured during deployment. For this, you need to modify the `appService` resource. 
+
+Notes: 
+* The value of the `appSettings` property is an array of objects. Each object has a `name` and a `value` property. You can use a syntax very similar to JSON.
+* If your storage account resource is named `storage`, you can get the list of access keys using `storage.listKeys()`.
+
+Once you have updated the bicep file, you can update your current deployment:
+```
+az deployment group create -g EonicsBicepHackNight --template-file Baseline.bicep
+```
+
+When you visit the sample website after deployment, you should now see that it is using Azure Blob Storage, instead of in-memory storage.
+
+In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise2_solution.bicep).
+
 ### Clean up ###
 Run the following command to clean up any Azure resources that you created during this workshop.
 ```
