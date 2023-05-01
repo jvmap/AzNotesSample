@@ -68,6 +68,10 @@ az deployment group create -g EonicsBicepHackNight --template-file Baseline.bice
 
 When you visit the sample website after deployment, you should now see that it is using Azure Blob Storage, instead of in-memory storage.
 
+![using_blob_storage](https://user-images.githubusercontent.com/1012756/235453194-dc9f5712-e661-4a92-b6f0-66ab938501a9.png)
+
+The note you enter is now persisted, even after application restarts.😏
+
 In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise2_solution.bicep).
 
 ### Clean up ###
