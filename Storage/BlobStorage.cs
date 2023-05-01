@@ -1,4 +1,5 @@
 ﻿using AzNotesSample.Configuration;
+using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
@@ -10,14 +11,14 @@ namespace AzNotesSample.Storage
     {
         private const string BLOB_CONTAINER_NAME = "aznotessample";
         private const string BLOB_NAME = "note";
-        private readonly string _storageConnectionString;
+        private readonly IBlobContainerClientFactory _factory;
 
-        public BlobStorage(StorageConnectionString storageConnectionString)
+        public BlobStorage(IBlobContainerClientFactory factory)
         {
-            _storageConnectionString = storageConnectionString.Value;
+            _factory = factory;
         }
 
-        public string DescriptiveText => "Azure Blob Storage";
+        public string DescriptiveText => $"Azure Blob Storage (with {_factory.DescriptiveText})";
 
         public async Task<string> LoadAsync()
         {
@@ -41,7 +42,7 @@ namespace AzNotesSample.Storage
 
         private async Task<BlobClient> CreateBlobClientAsync()
         {
-            var bcc = new BlobContainerClient(_storageConnectionString, BLOB_CONTAINER_NAME);
+            BlobContainerClient bcc = _factory.CreateBlobContainerClient(BLOB_CONTAINER_NAME);
             await bcc.CreateIfNotExistsAsync();
             return bcc.GetBlobClient(BLOB_NAME);
         }

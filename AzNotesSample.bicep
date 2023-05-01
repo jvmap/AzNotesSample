@@ -30,9 +30,12 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       appSettings: [
         { name: 'STORAGE_ACCOUNT_NAME', value: storage.name }
-        { name: 'STORAGE_ACCOUNT_KEY', value: storage.listKeys().keys[0].value}
+        { name: 'MANAGED_IDENTITY', value: '1'}
       ]
     }
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 
@@ -55,5 +58,16 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
   properties: {
     allowBlobPublicAccess: false
+  }
+}
+
+var roleDefinitionID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' // Storage Blob Data Contributor
+
+module storagePermission 'storage_permission.bicep' = {
+  name: 'storagePermission'
+  params: {
+    principalId: appService.identity.principalId
+    roleDefinitionId: roleDefinitionID
+    storageAccountName: storage.name
   }
 }
