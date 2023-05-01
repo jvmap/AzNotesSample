@@ -18,10 +18,8 @@ First, let's verify that all tools are correctly installed on your system.
    az deployment group create -g EonicsBicepHackNight --template-file Baseline.bicep
    ```
    Note: you may need to enter the full path to the ```Baseline.bicep``` file.
-1. When deployment is finished, visit the [Azure portal](https://portal.azure.com). Navigate to the EonicsBicepHackNight resource group and verify that it contains two resources:
+1. When deployment is finished, visit the [Azure portal](https://portal.azure.com). Navigate to the `EonicsBicepHackNight` resource group and verify that it contains two resources:
    * 1 App Service plan resource
-   * 1 App Service resource.
-   Click on the App Service resource, and then click Browse.
-
-Browse
-
+   * 1 App Service resource.<br/>
+   Click on the App Service resource, and then click ![azbrowse](https://user-images.githubusercontent.com/1012756/235449503-f9ff1bc3-a58e-4af3-96bd-0bde3343d50f.png).
+   You should see a functioning website using server-side, in-memory storage.
