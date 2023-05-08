@@ -136,6 +136,9 @@ The `storageAccountName` can also be defined symbolically in bicep in a similar 
 For `roleDefinitionId`, use the hard-coded value `'ba92f5b4-2d11-453d-a403-e96b0029c9fe'`. This is the ID of the built-in role [Storage Blob Data Contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor) role, which includes read and write access. For a full list of Azure built-in roles, see [Azure built-in roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles).
 
 You are now ready to deploy your resources!
+```
+az deployment group create -g EonicsBicepHackNight --template-file Baseline.bicep
+```
 
 If all went well, the application should look like this:
 
