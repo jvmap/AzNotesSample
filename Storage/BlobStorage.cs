@@ -36,6 +36,7 @@ namespace AzNotesSample.Storage
 
         public async Task SaveAsync(string text)
         {
+            text ??= "";
             BlobClient bc = await CreateBlobClientAsync();
             await bc.UploadAsync(new BinaryData(text), overwrite: true);
         }
