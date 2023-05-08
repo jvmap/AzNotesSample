@@ -44,7 +44,7 @@ Use the following info:
   
   ![blob_public_access](https://user-images.githubusercontent.com/1012756/235450555-a54fba19-3397-4b70-a4cd-167ede6f8bc5.png)
 
-Note: the name of the storage account needs to be unique within all of Azure. To make the account name unique, you can append `'${suffix}'` to the name you have chosen. This adds pseudorandom characters to the storage account name. The same strategy is used for the `appService` resource name.
+Note: the name of the storage account needs to be unique within all of Azure. To make the account name unique, you can append `${suffix}` to the name you have chosen. This adds pseudorandom characters to the storage account name. The same strategy is used for the `appService` resource name.
 
 Once you have updated the bicep file, you can update your current deployment:
 ```
