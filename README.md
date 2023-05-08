@@ -138,9 +138,16 @@ For `roleDefinitionId`, use the hard-coded value `'ba92f5b4-2d11-453d-a403-e96b0
 You are now ready to deploy your resources!
 
 If all went well, the application should look like this:
+
 ![managed_identity](https://user-images.githubusercontent.com/1012756/236767461-73bba52e-0879-4877-b4b5-3fb95ef0a3fe.png)
 
 In case you're stuck, or to verify, you can have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/AzNotesSample.bicep).
+
+Optionally, you can verify that you can now renew the storage account access keys, and it will not affect your application at all:
+```
+az storage account keys renew -g EonicsBicepHackNight -n <name of your storage account resource> --key key1
+az storage account keys renew -g EonicsBicepHackNight -n <name of your storage account resource> --key key2
+```
 
 ### Clean up ###
 Run the following command to clean up any Azure resources that you created during this workshop.
