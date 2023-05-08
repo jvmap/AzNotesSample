@@ -3,6 +3,8 @@ This is a very basic Azure sample application, to be used in conjunction with a 
 
 ## Hands on ##
 
+To follow the hands-on lab, you don't have to clone this repository. You only need to download and use the files that are explicitly mentioned in the instructions.
+
 ### Baseline ###
 
 First, let's verify that all tools are correctly installed on your system.
@@ -85,6 +87,60 @@ az webapp restart -g EonicsBicepHackNight -n <name of your webapp resource>
 Note: it may take about one minute for the web app to restart.
 
 In case you're stuck, or to verify, you may have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/Exercise2_solution.bicep).
+
+### Super Challenge: Passwordless authentication
+
+In this final challenge, we dive a little deeper into the Azure platform. Don't worry if you get stuck or need help. You don't need to know all this if you just want to work with Azure Bicep. However, if you're actively developing Azure applications, this is very useful to know.
+
+If you don't want to try this challenge, please skip to [Clean up](#clean-up).
+
+Let's first describe the problem we're going to solve. The sample application so far is very useful, but it still has one drawback: if an administrator decides to regenerate the access key of the storage account for security purposes, the app ceases to work.
+
+You can verify this by running the following command:
+```
+az storage account keys renew -g EonicsBicepHackNight -n <name of your storage account resource> --key key1
+```
+
+After about one minute, you should see that the web application no longer works. This problem can be solved by simply redeploying the application, but it is not an ideal solution. A better solution is to use passwordless authentication, which is the goal of this challenge.
+
+With passwordless authentication, there are no user-managed credentials, so that's one less thing that can break or be compromised.
+
+To use passwordless authentication with the sample app, we need to do the following:
+
+#### Update app configuration ###
+* The application setting `STORAGE_ACCOUNT_KEY` should no longer be configured.
+* The setting `MANAGED_IDENTITY` needs to be configured with the value `1`. This setting is recognized by the sample application code, and, if found, tells the sample application to try to use passwordless authentication.
+
+#### Enable system-assigned managed identity ####
+The `appService` resource must be configured to enable the system-assigned managed identity. This is done by adding the `identity` attribute and setting the correct `type`.
+  In case you want to learn more about managed identities in Azure, see: [What are managed identities for Azure resources?](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
+
+#### Grant access to the storage acount ####
+The `appService` resource must be granted read and write access to the storage account resource. This is achieved by granting the [Storage Blob Data Contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor) role *to* the `appService` resource *on* the storage account resource. Due to the way ARM works, this requires the use of an additional bicep file, `storage_permission.bicep`.
+
+Download [storage_permission.bicep](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/storage_permission.bicep) and place it next to your other bicep file(s). `storage_permission.bicep` does not need any modifications for this challenge.
+
+To include the bicep `storage_permission.bicep` file, use the following syntax:
+```bicep
+module storagePermission 'storage_permission.bicep' = {
+  name: 'storagePermission'
+  params: {
+    principalId: <fill in>
+    roleDefinitionId: <fill in>
+    storageAccountName: <fill in>
+  }
+}
+```
+The `principalId` can be defined symbolically in bicep. Hint: start with the symbolic name of your appService resource, e.g. `appService.`.
+The `storageAccountName` can also be defined symbolically in bicep in a similar way.
+For `roleDefinitionId`, use the hard-coded value `'ba92f5b4-2d11-453d-a403-e96b0029c9fe'`. This is the ID of the built-in role [Storage Blob Data Contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor) role, which includes read and write access. For a full list of Azure built-in roles, see [Azure built-in roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles).
+
+You are now ready to deploy your resources!
+
+If all went well, the application should look like this:
+![managed_identity](https://user-images.githubusercontent.com/1012756/236767461-73bba52e-0879-4877-b4b5-3fb95ef0a3fe.png)
+
+In case you're stuck, or to verify, you can have a look at [the solution](https://raw.githubusercontent.com/jvmap/AzNotesSample/main/AzNotesSample.bicep).
 
 ### Clean up ###
 Run the following command to clean up any Azure resources that you created during this workshop.
