@@ -11,18 +11,19 @@ namespace AzNotesSample.Storage
     {
         private const string BLOB_CONTAINER_NAME = "aznotessample";
         private const string BLOB_NAME = "note";
-        private readonly IBlobContainerClientFactory _factory;
+        private readonly Task<BlobClient> _createBlobClientAsync;
 
         public BlobStorage(IBlobContainerClientFactory factory)
         {
-            _factory = factory;
+            _createBlobClientAsync = CreateBlobClientAsync(factory);
+            DescriptiveText = $"Azure Blob Storage (with {factory.DescriptiveText})";
         }
 
-        public string DescriptiveText => $"Azure Blob Storage (with {_factory.DescriptiveText})";
+        public string DescriptiveText { get; private set; }
 
         public async Task<string> LoadAsync()
         {
-            BlobClient bc = await CreateBlobClientAsync();
+            BlobClient bc = await _createBlobClientAsync;
             if (await bc.ExistsAsync())
             {
                 var response = await bc.DownloadContentAsync();
@@ -37,13 +38,13 @@ namespace AzNotesSample.Storage
         public async Task SaveAsync(string text)
         {
             text ??= "";
-            BlobClient bc = await CreateBlobClientAsync();
+            BlobClient bc = await _createBlobClientAsync;
             await bc.UploadAsync(new BinaryData(text), overwrite: true);
         }
 
-        private async Task<BlobClient> CreateBlobClientAsync()
+        private static async Task<BlobClient> CreateBlobClientAsync(IBlobContainerClientFactory factory)
         {
-            BlobContainerClient bcc = _factory.CreateBlobContainerClient(BLOB_CONTAINER_NAME);
+            BlobContainerClient bcc = factory.CreateBlobContainerClient(BLOB_CONTAINER_NAME);
             await bcc.CreateIfNotExistsAsync();
             return bcc.GetBlobClient(BLOB_NAME);
         }
